@@ -32,7 +32,7 @@ public class CacheServer {
         String result = new String();
         for(int i=0;i<videos.size()-1;i++)
             result += videos.get(i).ID + " ";
-        result += videos.get(videos.size()-1);
+        result += videos.get(videos.size()-1).ID;
         return result;
     }
 }
