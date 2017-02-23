@@ -1,0 +1,1 @@
+Algorithm for the 2017 Google HashCode edition.
