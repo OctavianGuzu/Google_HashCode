@@ -6,5 +6,4 @@ import java.util.Vector;
 public class MainData {
     Vector<Endpoint> endpoints = new Vector<>();
     DataCenter dataCenter = new DataCenter();
-
 }
