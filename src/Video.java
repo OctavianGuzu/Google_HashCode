@@ -3,8 +3,14 @@
  */
 public class Video {
     int size;
+    int ID;
 
-    public Video(int size) {
+    public Video(int size, int ID) {
         this.size = size;
+        this.ID = ID;
+    }
+
+    public String toString() {
+        return "Video: "+size+" MB";
     }
 }

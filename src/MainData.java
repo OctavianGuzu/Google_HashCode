@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -31,7 +33,7 @@ public class MainData {
         aux = new StringTokenizer(line);
         for(int i=0;i<nrOfVideos;i++) {
             int videoSize = Integer.valueOf(aux.nextToken());
-            dataCenter.addVideo(new Video(videoSize));
+            dataCenter.addVideo(new Video(videoSize, i));
         }
         for(int i=0;i<nrOfEndpoints;i++) {
             line = in.readLine();
@@ -55,11 +57,36 @@ public class MainData {
             int nrRequests = Integer.valueOf(aux.nextToken());
             endpoints.get(endpointNr).requests.add(new Request(nrRequests, dataCenter.videos.get(videoNr)));
         }
-        line = in.readLine();
     }
 
     public static void main(String args[]) throws IOException {
         MainData obj = new MainData();
-        obj.readFromFile("sample_test.in");
+        obj.readFromFile("me_at_the_zoo.in");
+
+
+        // Start
+
+        for(Endpoint e: obj.endpoints) {
+            e.sortRequests();
+            e.sortCacheServers();
+            e.numberOfRequests();
+        }
+
+        Collections.sort(obj.endpoints, (o1, o2) -> o2.nrOfRequests - o1.nrOfRequests);
+
+        for(Endpoint e: obj.endpoints) {
+            for(Request r: e.requests) {
+                for(Pair p:e.connectCacheServers) {
+                    if(!p.cacheServer.videos.contains(r.requestedVideo))
+                        if(p.cacheServer.addVideo(r.requestedVideo))
+                            break;
+                }
+            }
+        }
+
+        for(int i=0;i<obj.cacheServers.size();i++)
+            System.out.println("" + i + " " + obj.cacheServers.get(i));
+
+
     }
 }

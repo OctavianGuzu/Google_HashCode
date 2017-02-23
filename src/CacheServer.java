@@ -27,4 +27,12 @@ public class CacheServer {
             return false;
         }
     }
+
+    public String toString() {
+        String result = new String();
+        for(int i=0;i<videos.size()-1;i++)
+            result += videos.get(i).ID + " ";
+        result += videos.get(videos.size()-1);
+        return result;
+    }
 }
