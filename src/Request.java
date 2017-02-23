@@ -8,5 +8,6 @@ public class Request {
     public Request(int numbersOfRequest, Video requestedVideo) {
         this.numbersOfRequest = numbersOfRequest;
         this.requestedVideo = requestedVideo;
+        requestedVideo.requests += numbersOfRequest;
     }
 }

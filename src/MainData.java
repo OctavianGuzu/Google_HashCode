@@ -61,7 +61,7 @@ public class MainData {
 
     public static void main(String args[]) throws IOException {
         MainData obj = new MainData();
-        obj.readFromFile("videos_worth_spreading.in");
+        obj.readFromFile("trending_today.in");
 
 
         // Start
@@ -80,6 +80,67 @@ public class MainData {
                     if(!p.cacheServer.videos.contains(r.requestedVideo))
                         if(p.cacheServer.addVideo(r.requestedVideo))
                             break;
+                        else { // Iau toate videoclipurile din cache-ul respectiv, in ordinea crescatoare a nr de requesturi
+                                // Iau o variabila sum = 0
+                                // Parcurg videourile
+                                // Adun la suma dim videoului si adaug Video intr-un vector de Video
+                                // If Cache.size - sum >= Video.size
+                                    // Parcurg videoclipurile din Vectorul de Video si iau cache cel mai apropiat ca latenta
+                                        // While(1)
+                                            // if(cache cel mai apropiat.add(Vector videoclipuri.element))
+                                                 // sum -= Vector videoclipuri.element.size();
+                                                // break
+                                            //else
+                                                // trec la cache urmator ca si latenta
+                            r.requestedVideo.requests = r.numbersOfRequest;
+                            Collections.sort(p.cacheServer.videos, new Comparator<Video>() {
+                                @Override
+                                public int compare(Video o1, Video o2) {
+                                    return o1.requests - o2.requests;
+                                }
+                            });
+
+                            int sum = 0;
+                            int sum_r = 0;
+                            Vector<Video> videos = new Vector<>();
+                            for(Video v:p.cacheServer.videos) {
+                                sum += v.size;
+                                videos.add(v);
+                            }
+                            if((p.cacheServer.capacity - p.cacheServer.totalVideosSize()) + sum >= r.requestedVideo.size) {
+                                if(sum_r < r.requestedVideo.requests) {
+                                    for(Video v: videos) {
+                                        if(obj.cacheServers.indexOf(p.cacheServer) == obj.cacheServers.size() - 1)
+                                            break;
+                                        CacheServer closest = obj.cacheServers.get(obj.cacheServers.indexOf(p.cacheServer) + 1);
+                                        CacheServer aux = closest;
+                                        System.out.println("HERE");
+                                        if( closest == null) {
+                                            continue;
+                                        }
+
+                                        while (true) {
+                                            if(closest == null) {
+                                                break;
+                                            }
+                                            int ok = 0;
+                                            if(closest.totalVideosSize() - v.size >= 0) {
+                                                if(!closest.videos.contains(v)) {
+                                                    closest.addVideo(v);
+                                                    break;
+                                                }
+                                            }
+                                            if(obj.cacheServers.indexOf(closest) == obj.cacheServers.size() - 1)
+                                                break;
+                                            closest = obj.cacheServers.get(obj.cacheServers.indexOf(closest) + 1);
+                                        }
+                                    }
+                                    p.cacheServer.videos.removeAll(videos);
+                                    p.cacheServer.videos.add(r.requestedVideo);
+                                }
+                            }
+
+                        }
                 }
             }
         }

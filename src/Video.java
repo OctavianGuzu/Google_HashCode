@@ -4,6 +4,7 @@
 public class Video {
     int size;
     int ID;
+    int requests = 0;
 
     public Video(int size, int ID) {
         this.size = size;
