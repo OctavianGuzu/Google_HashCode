@@ -61,7 +61,7 @@ public class MainData {
 
     public static void main(String args[]) throws IOException {
         MainData obj = new MainData();
-        obj.readFromFile("me_at_the_zoo.in");
+        obj.readFromFile("videos_worth_spreading.in");
 
 
         // Start
